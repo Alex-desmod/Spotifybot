@@ -1,9 +1,12 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-async def authorize():
+import app.endpoints
+
+async def authorize(tg_id):
+    auth_link = app.endpoints.get_auth_link(tg_id)
     kb = InlineKeyboardBuilder()
-    kb.add(InlineKeyboardButton(text="Авторизоваться в Spotify", url=auth_link))
+    kb.add(InlineKeyboardButton(text="🔗 Авторизоваться в Spotify", url=auth_link))
     return kb.as_markup()
 
 # async def start():

@@ -28,14 +28,14 @@ class FeedbackState(StatesGroup):
 async def cmd_start(message: Message):
     await rq.set_user(message.from_user.id, message.from_user.first_name)
     await message.answer(f'Привет, {message.from_user.first_name} 😊\n{messages[0]["start"]}',
-                         reply_markup=await kb.start())
+                         reply_markup=await kb.authorize(message.from_user.id))
 
 
-@router.callback_query(F.data == "back")
-async def back(callback: CallbackQuery):
-    await callback.answer()
-    await callback.message.answer(messages[0]["menu"],
-                                  reply_markup=await kb.start())
+# @router.callback_query(F.data == "back")
+# async def back(callback: CallbackQuery):
+#     await callback.answer()
+#     await callback.message.answer(messages[0]["menu"],
+#                                   reply_markup=await kb.start())
 
 
 @router.message(Command("feedback"))
@@ -66,7 +66,7 @@ async def cancel_feedback(message: Message, state: FSMContext):
     await state.clear()
 
 
-@router.message()
-async def catch_all_messages(message: Message):
-    await message.answer(messages[0]["sorry"],
-                         reply_markup=await kb.start())
+# @router.message()
+# async def catch_all_messages(message: Message):
+#     await message.answer(messages[0]["sorry"],
+#                          reply_markup=await kb.start())
