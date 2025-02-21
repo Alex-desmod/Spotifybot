@@ -5,17 +5,17 @@ from aiogram import Router, F, Bot
 from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove
+from aiogram.types import Message, ReplyKeyboardRemove
 
-import app.keyboards as kb
-import app.db.requests as rq
+import keyboards as kb
+import db.requests as rq
 
 
 router = Router(name=__name__)
 
 logger = logging.getLogger(__name__)
 
-with open("app/messages.json", "r", encoding="utf-8") as file:
+with open("messages.json", "r", encoding="utf-8") as file:
     messages = json.load(file)
 
 
@@ -27,8 +27,13 @@ class FeedbackState(StatesGroup):
 @router.message(CommandStart())
 async def cmd_start(message: Message):
     await rq.set_user(message.from_user.id, message.from_user.first_name)
-    await message.answer(f'Привет, {message.from_user.first_name} 😊\n{messages[0]["start"]}',
+    access_token = await rq.get_valid_access_token(message.from_user.id)
+    if not access_token:
+        await message.answer(f'Привет, {message.from_user.first_name} 😊\n{messages[0]["start"]}',
                          reply_markup=await kb.authorize(message.from_user.id))
+    else:
+        await message.answer("Твои топы",
+                             reply_markup=await kb.start())
 
 
 # @router.callback_query(F.data == "back")

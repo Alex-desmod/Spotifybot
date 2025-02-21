@@ -8,9 +8,9 @@ from aiogram.enums import ParseMode
 from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
 
-from app.handlers import router
-from app.db.models import async_db
-from app.web_server import app
+from handlers import router
+from db.models import async_db
+from web_server import app
 
 
 async def run_web_server():
