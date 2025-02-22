@@ -1,7 +1,11 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+from enum import Enum
 
 import endpoints
+
+
+
 
 async def authorize(tg_id):
     auth_link = endpoints.get_auth_link(tg_id)

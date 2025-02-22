@@ -5,7 +5,7 @@ from aiogram import Router, F, Bot
 from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
-from aiogram.types import Message, ReplyKeyboardRemove
+from aiogram.types import Message, ReplyKeyboardRemove, CallbackQuery
 
 import keyboards as kb
 import db.requests as rq
@@ -34,6 +34,18 @@ async def cmd_start(message: Message):
     else:
         await message.answer("Твои топы",
                              reply_markup=await kb.start())
+
+
+@router.callback_query(F.data == "artists")
+async def artists(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.answer()
+
+
+@router.callback_query(F.data == "tracks")
+async def tracks(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.answer()
 
 
 # @router.callback_query(F.data == "back")
