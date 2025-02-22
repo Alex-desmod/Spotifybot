@@ -5,7 +5,7 @@ from db.models import async_session
 from db.models import User
 from sqlalchemy import select
 
-from endpoints import TOKEN_URL, MAIN_ENDPOINT, SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET
+from endpoints import TOKEN_URL, MAIN_ENDPOINT, SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, get_tops_link, get_rec_link
 
 logger = logging.getLogger(__name__)
 
@@ -80,6 +80,43 @@ async def get_valid_access_token(tg_id) -> str|None:
             return await refresh_access_token(tg_id)  # The token is outdated and be refreshed
 
         return None  # Error
+
+
+async def get_charts(tg_id, entity, time_range, limit):
+    async with async_session() as session:
+        user = await session.scalar(select(User).where(User.tg_id == tg_id))
+        if not user or not user.access_token:
+            return None
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                get_tops_link(entity, time_range, limit),
+                headers={"Authorization": f"Bearer {user.access_token}"}
+            )
+
+        if response.status_code == 200:
+            return response.json()
+
+        return None  # Error
+
+
+async def get_recommendations(tg_id, seed_artists=None, seed_tracks=None):
+    async with async_session() as session:
+        user = await session.scalar(select(User).where(User.tg_id == tg_id))
+        if not user or not user.access_token:
+            return None
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                get_rec_link(seed_artists, seed_tracks),
+                headers={"Authorization": f"Bearer {user.access_token}"}
+            )
+
+        if response.status_code == 200:
+            return response.json()
+
+        return None  # Error
+
 
 
 async def get_admins():

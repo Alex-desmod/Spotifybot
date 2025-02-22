@@ -61,9 +61,34 @@ async def numbers(callback: CallbackQuery):
 @router.callback_query(F.data.endswith(".10")|F.data.endswith(".20")|F.data.endswith(".50"))
 async def charts(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer("Здесь будут чарты",
-                                  reply_markup=await kb.start())
+    queries = callback.data.split(".")
+    # logger.info(queries)
+    data = await rq.get_charts(callback.from_user.id, queries[0], queries[1], queries[2])
+    seed_artists =[]
+    seed_tracks = []
+    for item in data["items"]:
+        pos = data["items"].index(item) + 1
 
+        if queries[0] == "artists":
+            artist = item["name"]
+            await callback.message.answer(f"{pos:<4} <b>{artist}</b>\n")
+            if pos <= 5:
+                seed_artists.append(item["id"])
+
+        else:
+            artist = item["artists"][0]["name"]
+            track = item["name"]
+            await callback.message.answer(f"{pos:<4} <b>{artist}</b> - <b>{track}</b>\n")
+            if pos <= 5:
+                seed_tracks.append(item["id"])
+
+    if seed_artists:
+        seeds = "artists_" + ",".join(seed_artists)
+    if seed_tracks:
+        seeds = "tracks_" + ",".join(seed_tracks)
+
+    await callback.message.answer("Еще...",
+                                  reply_markup=await kb.more(seeds))
 
 
 @router.callback_query(F.data == "back")
@@ -101,7 +126,7 @@ async def cancel_feedback(message: Message, state: FSMContext):
     await state.clear()
 
 
-# @router.message()
-# async def catch_all_messages(message: Message):
-#     await message.answer(messages[0]["sorry"],
-#                          reply_markup=await kb.start())
+@router.message()
+async def catch_all_messages(message: Message):
+    await message.answer(messages[0]["sorry"],
+                         reply_markup=await kb.start())

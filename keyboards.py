@@ -28,8 +28,8 @@ async def authorize(tg_id):
 
 async def start():
     kb = InlineKeyboardBuilder()
-    kb.add(InlineKeyboardButton(text="Top Artists", callback_data="artists"))
-    kb.add(InlineKeyboardButton(text="Top Tracks", callback_data="tracks"))
+    kb.add(InlineKeyboardButton(text="Top artists", callback_data="artists"))
+    kb.add(InlineKeyboardButton(text="Top tracks", callback_data="tracks"))
     return kb.adjust(1).as_markup()
 
 
@@ -49,6 +49,13 @@ async def limits(entity):
         # logger.info(entity)
     kb.add(InlineKeyboardButton(text="Главное меню 🔙", callback_data='back'))
     return kb.adjust(3).as_markup()
+
+
+async def more(seeds):
+    kb = InlineKeyboardBuilder()
+    kb.add(InlineKeyboardButton(text="Spotify рекомендует", callback_data=seeds))
+    kb.add(InlineKeyboardButton(text="Главное меню 🔙", callback_data='back'))
+    return kb.adjust(1).as_markup()
 
 
 cancel_kb = ReplyKeyboardMarkup(
