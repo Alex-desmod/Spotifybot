@@ -1,5 +1,6 @@
 import json
 import logging
+from email.policy import default
 
 from aiogram import Router, F, Bot
 from aiogram.filters import CommandStart, Command
@@ -39,20 +40,37 @@ async def cmd_start(message: Message):
 @router.callback_query(F.data == "artists")
 async def artists(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer()
+    await callback.message.answer("Топ по группам и исполнителям. Выбери временной интервал.",
+                                  reply_markup=await kb.times(callback.data))
 
 
 @router.callback_query(F.data == "tracks")
 async def tracks(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer()
+    await callback.message.answer("Топ треков. Выбери временной интервал.",
+                                  reply_markup=await kb.times(callback.data))
 
 
-# @router.callback_query(F.data == "back")
-# async def back(callback: CallbackQuery):
-#     await callback.answer()
-#     await callback.message.answer(messages[0]["menu"],
-#                                   reply_markup=await kb.start())
+@router.callback_query(F.data.endswith("_term"))
+async def numbers(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.answer("Выбери количество",
+                                  reply_markup=await kb.limits(callback.data))
+
+
+@router.callback_query(F.data.endswith(".10")|F.data.endswith(".20")|F.data.endswith(".50"))
+async def charts(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.answer("Здесь будут чарты",
+                                  reply_markup=await kb.start())
+
+
+
+@router.callback_query(F.data == "back")
+async def back(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.answer("Long live rock-n-roll",
+                                  reply_markup=await kb.start())
 
 
 @router.message(Command("feedback"))
