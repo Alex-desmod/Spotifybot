@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-SCOPES = "user-top-read user-read-recently-played"
+SCOPES = "user-top-read user-read-recently-played user-read-private"
 AUTH_URL = "https://accounts.spotify.com/authorize"
 TOKEN_URL = "https://accounts.spotify.com/api/token"
 MAIN_ENDPOINT = "https://api.spotify.com/v1/me"

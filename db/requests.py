@@ -66,12 +66,14 @@ async def get_valid_access_token(tg_id) -> str|None:
         if not user or not user.access_token:
             return None
 
+        # logger.info(f"{tg_id}: {user.access_token}")
         # Check if the token is working (by test request)
         async with httpx.AsyncClient() as client:
             response = await client.get(
                 MAIN_ENDPOINT,
                 headers={"Authorization": f"Bearer {user.access_token}"}
                 )
+            # logger.info(response.status_code)
 
         if response.status_code == 200:
             return user.access_token  # The token is valid
@@ -85,6 +87,7 @@ async def get_valid_access_token(tg_id) -> str|None:
 async def get_charts(tg_id, entity, time_range, limit):
     async with async_session() as session:
         user = await session.scalar(select(User).where(User.tg_id == tg_id))
+        logger.info(user.access_token)
         if not user or not user.access_token:
             return None
 

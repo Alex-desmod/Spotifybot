@@ -29,6 +29,7 @@ class FeedbackState(StatesGroup):
 async def cmd_start(message: Message):
     await rq.set_user(message.from_user.id, message.from_user.first_name)
     access_token = await rq.get_valid_access_token(message.from_user.id)
+    # logger.info(access_token)
     if not access_token:
         await message.answer(f'Привет, {message.from_user.first_name} 😊\n{messages[0]["start"]}',
                          reply_markup=await kb.authorize(message.from_user.id))
@@ -62,7 +63,7 @@ async def numbers(callback: CallbackQuery):
 async def charts(callback: CallbackQuery):
     await callback.answer()
     queries = callback.data.split(".")
-    # logger.info(queries)
+    logger.info(callback.from_user.id)
     data = await rq.get_charts(callback.from_user.id, queries[0], queries[1], queries[2])
 
     for item in data["items"]:
