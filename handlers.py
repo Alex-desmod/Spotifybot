@@ -33,28 +33,28 @@ async def cmd_start(message: Message):
         await message.answer(f'Привет, {message.from_user.first_name} 😊\n{messages[0]["start"]}',
                          reply_markup=await kb.authorize(message.from_user.id))
     else:
-        await message.answer("Твои топы",
+        await message.answer(messages[0]["top"],
                              reply_markup=await kb.start())
 
 
 @router.callback_query(F.data == "artists")
 async def artists(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer("Топ по группам и исполнителям. Выбери временной интервал.",
+    await callback.message.answer(messages[0]["time"],
                                   reply_markup=await kb.times(callback.data))
 
 
 @router.callback_query(F.data == "tracks")
 async def tracks(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer("Топ треков. Выбери временной интервал.",
+    await callback.message.answer(messages[0]["time2"],
                                   reply_markup=await kb.times(callback.data))
 
 
 @router.callback_query(F.data.endswith("_term"))
 async def numbers(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer("Выбери количество",
+    await callback.message.answer(messages[0]["hunter"],
                                   reply_markup=await kb.limits(callback.data))
 
 
@@ -64,37 +64,27 @@ async def charts(callback: CallbackQuery):
     queries = callback.data.split(".")
     # logger.info(queries)
     data = await rq.get_charts(callback.from_user.id, queries[0], queries[1], queries[2])
-    seed_artists =[]
-    seed_tracks = []
+
     for item in data["items"]:
         pos = data["items"].index(item) + 1
 
         if queries[0] == "artists":
             artist = item["name"]
             await callback.message.answer(f"{pos:<4} <b>{artist}</b>\n")
-            if pos <= 5:
-                seed_artists.append(item["id"])
 
         else:
             artist = item["artists"][0]["name"]
             track = item["name"]
             await callback.message.answer(f"{pos:<4} <b>{artist}</b> - <b>{track}</b>\n")
-            if pos <= 5:
-                seed_tracks.append(item["id"])
-
-    if seed_artists:
-        seeds = "artists_" + ",".join(seed_artists)
-    if seed_tracks:
-        seeds = "tracks_" + ",".join(seed_tracks)
 
     await callback.message.answer("Еще...",
-                                  reply_markup=await kb.more(seeds))
+                                  reply_markup=await kb.start())
 
 
 @router.callback_query(F.data == "back")
 async def back(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer("Long live rock-n-roll",
+    await callback.message.answer(messages[0]["what"],
                                   reply_markup=await kb.start())
 
 

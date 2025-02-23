@@ -1,6 +1,12 @@
 [
   {
-    "start": "Если ты пользуешься Spotify, то я могу показать, что там у тебя в топе прослушиваний. В приложении почему-то статистику не показывают. Интересно? Для этого сначала надо авторизоваться ⬇\uFE0F \nЭто безопасно. Я не узнаю твои явки/пароли и даже не расскажу никому о твоих guilty pleasures \uD83D\uDE09",
+    "start": "Если ты пользуешься Spotify, то я могу показать, что там у тебя в топах прослушиваний. Интересно? Тогда давай авторизуемся ⬇\uFE0F \nЭто безопасно. Я не узнаю твои явки/пароли и даже не расскажу никому о твоих guilty pleasures \uD83D\uDE09 После успешной авторизации введи команду /start еще раз",
+    "top": "It's a long way to the top if you wanna rock'n'roll\n<i>AC/DC</i>",
+    "time": "Time, it needs time to win back your love again\n<i>Scorpions</i>",
+    "time2": "Find all you need in your mind if you take the time\n<i>Dream Theater</i>",
+    "hunter": "They call me the hunter, that's my name\n<i>Led Zeppelin</i>",
+    "what": "Does anybody know what we are looking for?\n<i>Queen</i>",
+    "smtn": "Everybody's looking for something\n<i>Eurythmics</i>",
     "sorry": "Сорри, я тупой бот и не умею отвечать на сообщения. Пожалуйста, выбери что-нибудь из меню.",
     "feedback": "Если хочешь что-то высказать разработчику/админу, пиши и я ему обязательно передам. Но сомневаюсь, что он отреагирует!\nЕсли не хочешь, нажми на кнопку Отмена ⬇\uFE0F",
     "send": "Спасибо! Твое мнение очень важно для нас \uD83D\uDE09",

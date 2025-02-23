@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-SCOPES = "user-top-read user-read-recently-played user-read-private"
+SCOPES = "user-top-read user-read-recently-played"
 AUTH_URL = "https://accounts.spotify.com/authorize"
 TOKEN_URL = "https://accounts.spotify.com/api/token"
 MAIN_ENDPOINT = "https://api.spotify.com/v1/me"
@@ -20,11 +20,5 @@ def get_auth_link(tg_id):
 def get_tops_link(entity, time_range, limit):
     return f"{MAIN_ENDPOINT}/top/{entity}?time_range={time_range}&limit={limit}&offset=0"
 
-def get_rec_link(seed_artists=None, seed_tracks=None):
-    url = "https://api.spotify.com/v1/recommendations?"
-    if seed_artists:
-        return f"{url}seed_artists={seed_artists}&limit=10"
-    if seed_tracks:
-        return f"{url}seed_tracks={seed_tracks}&limit=10"
-    return None
+
 

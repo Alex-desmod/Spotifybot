@@ -51,13 +51,6 @@ async def limits(entity):
     return kb.adjust(3).as_markup()
 
 
-async def more(seeds):
-    kb = InlineKeyboardBuilder()
-    kb.add(InlineKeyboardButton(text="Spotify рекомендует", callback_data=seeds))
-    kb.add(InlineKeyboardButton(text="Главное меню 🔙", callback_data='back'))
-    return kb.adjust(1).as_markup()
-
-
 cancel_kb = ReplyKeyboardMarkup(
     keyboard=[[KeyboardButton(text="❌ Отмена")]],
     resize_keyboard=True,
